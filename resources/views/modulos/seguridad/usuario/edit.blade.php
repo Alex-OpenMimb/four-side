@@ -8,7 +8,7 @@
 
                 <form method="POST" action="{{route('usuarios.catalogo.update',['user'=>$user])}}" enctype="multipart/form-data">
                     @csrf
-
+                    @method('PUT')
                     <div class="mb-3">
                         <input class="form-control" type="file" id="imagen" name="usuarioFoto" accept="image/*" onchange="previewImage(event)" required>
                         @error('usuarioFoto') <span class="text-danger ">{{ $message }}</span> @enderror

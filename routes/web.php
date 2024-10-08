@@ -36,7 +36,7 @@ Route::prefix('seguridad')->group(function () {
         Route::get('/catalogo', [UsuarioController::class, 'index'])->name('usuarios.catalogo');
         Route::get('/catalogo/{user}', [UsuarioController::class, 'show'])->name('usuarios.catalogo.show');
         Route::get('/catalogo/foto/{user}', [UsuarioController::class, 'edit'])->name('usuarios.catalogo.edit');
-        Route::post('/catalogo/foto/{user}', [UsuarioController::class, 'update'])->name('usuarios.catalogo.update');
+        Route::put('/catalogo/foto/{user}', [UsuarioController::class, 'update'])->name('usuarios.catalogo.update');
 
     });
 
