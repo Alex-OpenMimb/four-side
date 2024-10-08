@@ -18,4 +18,5 @@
         @yield('content')
     </section>
 </div>
+
 @endsection

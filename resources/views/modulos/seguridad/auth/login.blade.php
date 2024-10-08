@@ -19,7 +19,7 @@
             @error('usuarioAlias') <span class="text-danger ">{{ $message }}</span> @enderror
         </label>
         <label class="input-group mb-3">
-            <input placeholder="Contraseña" autocomplete="off"  aria-label="contraseña" aria-describedby="Contraseña" id="password"
+            <input   placeholder="Contraseña" autocomplete="off"  aria-label="contraseña" aria-describedby="Contraseña" id="password"
                 type="password" class="form-control" name="usuarioPassword"  value="{{old('usuarioPassword')}}" required >
             @error('usuarioPassword') <span class="text-danger ">{{ $message }}</span> @enderror
         </label>
@@ -35,4 +35,8 @@
         </div>
 
     @endif
+
+    @push('javascript')
+        <script src="{{ asset('modulos/js/seguridad/helpers/login.js') }}"></script>
+    @endpush
 @endsection
