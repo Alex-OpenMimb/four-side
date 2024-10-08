@@ -4,7 +4,7 @@ namespace App\Http\Requests\Seguridad;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class ResetPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,9 +21,13 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'usuarioEmail' => 'required|exists:seg_usuario,usuarioEmail',
-        ];
+         switch ( $this->method() ){
+             case 'POST':
+                 return [
+                     'usuarioEmail' => 'required|exists:seg_usuario,usuarioEmail',
+                 ];
+
+         }
     }
 
 

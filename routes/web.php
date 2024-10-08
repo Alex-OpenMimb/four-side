@@ -24,6 +24,7 @@ Route::prefix('seguridad')->group(function () {
         Route::get('/restart', [LoginController::class, 'restart'])->name('restart');
         Route::post('/forgot-password', [LoginController::class, 'sendCode'])->name('forgot.password');
         Route::get('/form-code', [LoginController::class, 'formCode'])->name('form.code');
+        Route::post('/check-code', [LoginController::class, 'checkCode'])->name('check.code');
 
     });
 

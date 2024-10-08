@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\Seguridad;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\Seguridad\AccesoFormRequest;
-use App\Http\Requests\Seguridad\LoginRequest;
+use App\Http\Requests\Seguridad\ResetPasswordRequest;
 use App\Mail\ResetPasswordCode;
 use App\Models\Seguridad\Usuario;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use PhpParser\Node\Stmt\TryCatch;
+
+
 
 
 class LoginController extends Controller
@@ -77,13 +80,14 @@ class LoginController extends Controller
         return view('modulos.seguridad.auth.checkCode');
     }
 
-    public function sendCode( LoginRequest $request )
+    public function sendCode( ResetPasswordRequest $request )
     {
-        $code = rand(100000, 999999);
+        $code = rand(10000000, 99999999);
+        $cryptCode = Crypt::encryptString( $code );
         try {
             DB::table('password_reset_tokens')->updateOrInsert(
                 ['email' => $request->usuarioEmail],
-                ['token' => $code, 'created_at' => now()]
+                ['token' => $cryptCode, 'created_at' => now()]
             );
             Mail::to($request->usuarioEmail)->send( new  ResetPasswordCode( $code ));
             return  redirect()->route('form.code');
@@ -92,6 +96,42 @@ class LoginController extends Controller
         }
 
     }
+
+
+    public function checkCode( Request $request )
+    {
+        $request->validate([
+            'email' => 'required|email|exists:password_reset_tokens,email',
+            'token' => 'required|numeric',
+        ] ,
+            [
+                'email.required' => 'El campo de correo electrónico es obligatorio.',
+                'email.email'   => 'Por favor, introduce un correo electrónico válido.',
+                'email.exists' => 'El correo electrónico no coincide con nuestros registros.',
+                'token.required' => 'El código es obligatorio.',
+                'token.numeric' => 'El código debe ser un número.',
+            ]
+        );
+
+        $storedToken =  DB::table('password_reset_tokens')
+                              ->where('email', $request->email)
+                              ->first();
+
+        if(  Crypt::decryptString( $storedToken->token )  !== $request->token ){
+            return redirect()->back()->with('error','El código ingresado no es correcto. Por favor, verifica tu correo electrónico y asegúrate de ingresar el código tal como aparece. Si continúas teniendo problemas, puedes solicitar un nuevo código');
+        }
+
+        if (now()->diffInMinutes($storedToken->created_at) > 15) {
+            return redirect()->back()->with('error','El tiempo límite para usar el código enviado ha expirado. Por favor, solicita un nuevo código para continuar');
+        }
+
+
+
+
+    }
+
+
+
 
 
 }
