@@ -13,19 +13,23 @@ Route::prefix('seguridad')->group(function () {
 
     /**INICIO SESION */
     Route::prefix('auth')->group(function () {
-        Route::get('/login', [LoginController::class, 'login'])->name('login');
+        Route::get('/login', [LoginController::class, 'index'])->name('index');
 
         Route::post('/acceso', [
             LoginController::class,
-            'acceso'
-        ])->name('login.acceso');
+            'login'
+        ])->name('login');
+
+        Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
     });
 
     /**USUARIO */
     Route::prefix('usuarios')->group(function () {
         Route::get('/catalogo', [
             UsuarioController::class,
-            'catalogo'
-        ])->name('usuarios.catalogo');
+            'index'
+        ])->name('usuarios.catalogo')
+            ->middleware('acceso');
     });
 });

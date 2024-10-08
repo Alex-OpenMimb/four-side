@@ -22,7 +22,7 @@ class AccesoFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'usuarioAlias' => 'required',
+            'usuarioAlias' => 'required|exists:seg_usuario,usuarioAlias',
             'usuarioPassword' => 'required'
         ];
     }
@@ -31,6 +31,7 @@ class AccesoFormRequest extends FormRequest
     {
         return [
             'usuarioAlias.required' => 'El campo usuario es requerido.',
+            'usuarioAlias.exists' => 'El usuario ingresado no está registrado en la base de datos.',
             'usuarioPassword.required' => 'El campo contraseña es requerido.'
         ];
     }

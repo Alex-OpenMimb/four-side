@@ -13,15 +13,15 @@ return new class extends Migration
     {
 
         Schema::create('seg_usuario', function (Blueprint $table) {
-            $table->id();
+            $table->id('idUsuario');
             $table->string('usuarioNombre')->nullable();
             $table->string('usuarioAlias')->nullable();
             $table->string('usuarioFoto')->nullable();
             $table->string('usuarioPassword')->nullable();
             $table->string('usuarioEmail')->nullable();
             $table->boolean('usuarioConectado')->default(0);
-            $table->enum('usuarioEstado',['Activo','Inactivo'])->default('Activo');
-            $table->dateTime('usuarioUltimaConexión')->nullable();
+            $table->enum('usuarioEstado',['Activo','Inactivo','Bloqueado'])->default('Activo');
+            $table->dateTime('usuarioUltimaConexion')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

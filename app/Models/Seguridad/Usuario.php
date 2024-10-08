@@ -3,9 +3,9 @@
 namespace App\Models\Seguridad;
 
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+
 
 class Usuario extends Model
 {
@@ -13,6 +13,7 @@ class Usuario extends Model
     protected $table = 'seg_usuario';
 
     protected $fillable = [
+        'idUsuario',
         'usuarioAlias',
         'usuarioFoto',
         'usuarioPassword',
@@ -20,7 +21,7 @@ class Usuario extends Model
         'usuarioEmail',
         'usuarioConectado',
         'usuarioEstado',
-        'usuarioUltimaConexión',
+        'usuarioUltimaConexion',
     ];
 
     //Usuarios de prueba
@@ -29,21 +30,24 @@ class Usuario extends Model
             'usuarioNombre' => 'Alex Hurtado',
             'usuarioPassword' =>'AlexHurtado1047',
             'usuarioEmail' => 'alexhurtado@hot.com',
+            'usuarioEstado' => 'Activo',
         ],
         [
             'usuarioNombre' => 'Juan Castro',
             'usuarioPassword' =>'JuanCastro897',
             'usuarioEmail' => 'juancastro@hot.com',
+            'usuarioEstado' => 'Inactivo',
         ],
         [
             'usuarioNombre' => 'Andrea Lopez',
             'usuarioPassword' =>'#LopezAndrea$%',
             'usuarioEmail' => 'andrea@hot.com',
+            'usuarioEstado' => 'Bloqueado',
         ],
     ];
 
     protected $primaryKey = "idUsuario";
-    public $timestamps = false;
+    public $timestamps = true;
 
 
     public function conectar($id, $token)
@@ -61,26 +65,30 @@ class Usuario extends Model
 
     public function desconectar($id)
     {
-        $row = Usuario::find($id);
-        if ($row) {
-            $row->save();
+        $usuario = Usuario::find($id);
+        if ($usuario) {
+            $usuario->usuarioConectado = 0;
+            $usuario->save();
             return TRUE;
         } else {
             return FALSE;
         }
     }
 
-    public function obtenerUsuario($usuarioAlias)
+
+    //Scope
+    public function scopeGetUser(Builder $query, $userAlias )
     {
-        $usuario = $this->whereRaw("usuarioAlias = BINARY '" . $usuarioAlias . "'")->get()->first();
-        return $usuario;
+        $query->where('usuarioAlias',$userAlias )->select('idUsuario','usuarioEstado','usuarioPassword');
     }
 
-    function guardarSesion($idUsuario)
+    public function guardarSesion($id)
     {
-        $usuario = $this->find($idUsuario);
+        $usuario =  Usuario::find($id);
         $usuario->usuarioUltimaConexion = date('Y-m-d H:i:s');
+        $usuario->usuarioConectado = 1;
         $usuario->save();
+        session()->put('user', $usuario);
         return true;
     }
 }

@@ -10,8 +10,11 @@ use App\Http\Controllers\Controller;
 class UsuarioController extends Controller
 {
 
-    public function catalogo()
+    public function index()
     {
+
         return view("modulos.seguridad.usuario.catalogo");
     }
+
+
 }

@@ -14,13 +14,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-       
+
 
         $middleware->alias([
             'acceso' => Acesso::class,
-            'SqlInyection' => SqlInyection::class,
-            'permiso' => Permiso::class,
+            //'SqlInyection' => SqlInyection::class,
+            //'permiso' => Permiso::class,
         ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

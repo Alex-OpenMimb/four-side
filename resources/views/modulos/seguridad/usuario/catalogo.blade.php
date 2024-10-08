@@ -2,7 +2,14 @@
 
 @section('slot')
     <div class="container mt-5">
+
         <div class="table-responsive">
+            <form method="POST" class="mb-2 d-flex justify-content-end" action="{{ route('logout') }}" >
+                @csrf
+                <button type="submit" class="btn btn-danger btn-sm">
+                    logout
+                </button>
+            </form>
             <table class="table table-bordered table-striped table-hover align-middle text-center rounded">
                 <thead class="table-primary">
                 <tr>

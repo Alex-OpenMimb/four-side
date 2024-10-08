@@ -21,9 +21,10 @@ class DatabaseSeeder extends Seeder
         foreach (Usuario::$DATA as $index => $data  ){
             Usuario::create([
                 'usuarioNombre' => $data['usuarioNombre'],
-                'usuarioAlias' => Str::slug($data['usuarioNombre'],'-'),
+                'usuarioAlias' => $data['usuarioNombre'],
                 'usuarioPassword' =>  Hash::make($data['usuarioPassword']),
                 'usuarioEmail' => $data['usuarioEmail'],
+                'usuarioEstado' => $data['usuarioEstado'],
             ]);
         }
 
