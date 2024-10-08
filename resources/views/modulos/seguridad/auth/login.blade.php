@@ -36,7 +36,4 @@
 
     @endif
 
-    @push('javascript')
-        <script src="{{ asset('modulos/js/seguridad/helpers/login.js') }}"></script>
-    @endpush
 @endsection

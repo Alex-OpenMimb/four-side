@@ -6,11 +6,12 @@
             <div class="col-md-6">
                 <h3 class="text-center mb-4">Adjuntar Foto</h3>
 
-                <form method="POST" action="/upload" enctype="multipart/form-data">
+                <form method="POST" action="{{route('usuarios.catalogo.update',['user'=>$user])}}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
-                        <input class="form-control" type="file" id="imagen" name="imagen" accept="image/*" onchange="previewImage(event)" required>
+                        <input class="form-control" type="file" id="imagen" name="usuarioFoto" accept="image/*" onchange="previewImage(event)" required>
+                        @error('usuarioFoto') <span class="text-danger ">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="d-flex gap-2">

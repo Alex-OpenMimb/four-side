@@ -6,6 +6,7 @@
             Atras
         </a>
     </div>
+
 <div class="container d-flex justify-content-center align-items-center">
 
     <div class="card" style="width: 18rem;">
@@ -27,7 +28,7 @@
 
         </div >
         <div class="card-body">
-            <a href="{{route('usuarios.catalogo.edit',['user'=>$user])}}" class="card-link">Actualizar foto</a>
+            <a href="{{route('usuarios.catalogo.edit',['user'=>$user])}}" class="card-link">Adjuntar foto</a>
         </div>
     </div>
 </div>

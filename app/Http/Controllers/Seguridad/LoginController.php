@@ -40,7 +40,7 @@ class LoginController extends Controller
         }else{
 
            if( Hash::check($usuariosPassword, $user->usuarioPassword ) ){
-               $user->guardarSesion( $user );
+               $this->modelUsuario->guardarSesion( $user );
                return redirect()->route('usuarios.catalogo');
            }else{
                return redirect()->back()->with('error','Contraseña incorrecta, favor verificar');
@@ -52,7 +52,7 @@ class LoginController extends Controller
     public function logout()
     {
         $user = auth()->user();
-        if( $user->desconectar( $user ) ){
+        if( $this->modelUsuario->desconectar( $user ) ){
             Auth::logout();
             return redirect('/');
         }else{
