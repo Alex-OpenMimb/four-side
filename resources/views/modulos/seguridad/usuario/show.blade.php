@@ -21,8 +21,8 @@
         <div class="list-group list-group-flush">
             <div class="list-group-item"><strong>Nombre:</strong> {{$user->usuarioNombre}}</div>
             <div class="list-group-item"><strong>Alias:</strong> {{$user->usuarioAlias}}</div>
-            <div class="list-group-item"><strong>Email:</strong>{{$user->usuarioEmail}}</div>
-            <div class="list-group-item"><strong>Última conexión</strong>{{$user->usuarioUltimaConexion}}</div>
+            <div class="list-group-item"><strong>Email:</strong> {{$user->usuarioEmail}}</div>
+            <div class="list-group-item"><strong>Última conexión:</strong> @if( $user->usuarioUltimaConexion ) {{$user->usuarioUltimaConexion}} @else Sin registro  @endif </div>
             <div class="list-group-item"><strong>Estado:</strong> {{$user->usuarioEstado}}</div>
 
         </div >

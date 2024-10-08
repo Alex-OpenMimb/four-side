@@ -63,9 +63,8 @@ class Usuario extends Model
         }
     }
 
-    public function desconectar($id)
+    public function desconectar( Usuario $usuario )
     {
-        $usuario = Usuario::find($id);
         if ($usuario) {
             $usuario->usuarioConectado = 0;
             $usuario->save();
@@ -79,12 +78,12 @@ class Usuario extends Model
     //Scope
     public function scopeGetUser(Builder $query, $userAlias )
     {
-        $query->where('usuarioAlias',$userAlias )->select('idUsuario','usuarioEstado','usuarioPassword');
+        $query->where('usuarioAlias',$userAlias )
+            ->select('idUsuario','usuarioEstado','usuarioPassword');
     }
 
-    public function guardarSesion($id)
+    public function guardarSesion( Usuario $usuario )
     {
-        $usuario =  Usuario::find($id);
         $usuario->usuarioUltimaConexion = date('Y-m-d H:i:s');
         $usuario->usuarioConectado = 1;
         $usuario->save();
