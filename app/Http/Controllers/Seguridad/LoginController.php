@@ -125,7 +125,7 @@ class LoginController extends Controller
         }
 
         if(  Crypt::decryptString( $storedToken->token )  !== $request->token ){
-            return redirect()->back()->with('error','El código ingresado no es correcto. Por favor, verifica tu correo electrónico y asegúrate de ingresar el código tal como aparece. Si continúas teniendo problemas, puedes solicitar un nuevo código');
+            return redirect()->back()->with('error','El código ingresado es incorrecto');
         }
         $user =  Usuario::where('usuarioEmail', $storedToken->email)->first();
         DB::table('password_reset_tokens')->where('email',$storedToken->email)->delete();
