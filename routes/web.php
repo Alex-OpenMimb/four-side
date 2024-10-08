@@ -25,6 +25,8 @@ Route::prefix('seguridad')->group(function () {
         Route::post('/forgot-password', [LoginController::class, 'sendCode'])->name('forgot.password');
         Route::get('/form-code', [LoginController::class, 'formCode'])->name('form.code');
         Route::post('/check-code', [LoginController::class, 'checkCode'])->name('check.code');
+        Route::get('/edit-password/{user}', [LoginController::class, 'editPassword'])->name('edit.password');
+        Route::put('/update-password/{user}', [LoginController::class, 'updatePassword'])->name('update.password');
 
     });
 

@@ -38,7 +38,7 @@ class ResetPasswordCode extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'modulos.seguridad.auth.resetPasswordCode',
+            view: 'modulos.seguridad.auth.emailCode',
         );
     }
 

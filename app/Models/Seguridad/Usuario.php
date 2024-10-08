@@ -83,10 +83,10 @@ class Usuario extends Authenticatable
 
 
     //Scope
-    public function scopeGetUser(Builder $query, $userAlias )
+    public function scopeGetUser(Builder $query, $usuarioEmail )
     {
-        $query->where('usuarioAlias',$userAlias )
-            ->select('idUsuario','usuarioEstado','usuarioPassword');
+        $query->where('usuarioEmail',$usuarioEmail )
+            ->select('idUsuario','usuarioEstado','usuarioPassword','usuarioNombre');
     }
 
     public function guardarSesion( Usuario $usuario )

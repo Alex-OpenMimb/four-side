@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Seguridad;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\Seguridad\AccesoFormRequest;
 use App\Http\Requests\Seguridad\ResetPasswordRequest;
@@ -35,16 +36,17 @@ class LoginController extends Controller
 
     public function login(AccesoFormRequest $request)
     {
-        $usuariosAlias    = $request->usuarioAlias;
+        $usuarioEmail    = $request->usuarioEmail;
         $usuariosPassword = $request->usuarioPassword;
-        $user = Usuario::getUser( $usuariosAlias )->first();
+        $user = Usuario::getUser( $usuarioEmail )->first();
+        $usuarioNombre = $user->usuarioNombre;
 
         if( $user->usuarioEstado === 'Inactivo' ) {
 
-            return redirect()->back()->with('error', 'El Usuario '. $usuariosAlias .' está inactivo, favor verificar');
+            return redirect()->back()->with('error', 'El Usuario '. $usuarioNombre .' está inactivo, favor verificar');
         }elseif( $user->usuarioEstado === 'Bloqueado' ){
 
-            return redirect()->back()->with('error','El usuario ' . $usuariosAlias .' está bloqueado, favor verificar');
+            return redirect()->back()->with('error','El usuario ' . $usuarioNombre .' está bloqueado, favor verificar');
         }else{
 
            if( Hash::check($usuariosPassword, $user->usuarioPassword ) ){
@@ -87,7 +89,7 @@ class LoginController extends Controller
         try {
             DB::table('password_reset_tokens')->updateOrInsert(
                 ['email' => $request->usuarioEmail],
-                ['token' => $cryptCode, 'created_at' => now()]
+                ['token' => $cryptCode, 'created_at' => Carbon::now()]
             );
             Mail::to($request->usuarioEmail)->send( new  ResetPasswordCode( $code ));
             return  redirect()->route('form.code');
@@ -115,19 +117,34 @@ class LoginController extends Controller
 
         $storedToken =  DB::table('password_reset_tokens')
                               ->where('email', $request->email)
+                             ->where('created_at', '>=', Carbon::now()->subMinutes(15))
                               ->first();
+        if( !$storedToken ){
+            return redirect()->back()->with('error','El tiempo límite para usar el código enviado ha expirado. Por favor, solicita un nuevo código para continuar');
+
+        }
 
         if(  Crypt::decryptString( $storedToken->token )  !== $request->token ){
             return redirect()->back()->with('error','El código ingresado no es correcto. Por favor, verifica tu correo electrónico y asegúrate de ingresar el código tal como aparece. Si continúas teniendo problemas, puedes solicitar un nuevo código');
         }
+        $user =  Usuario::where('usuarioEmail', $storedToken->email)->first();
+        DB::table('password_reset_tokens')->where('email',$storedToken->email)->delete();
+        return  redirect()->route('edit.password',[$user] );
 
-        if (now()->diffInMinutes($storedToken->created_at) > 15) {
-            return redirect()->back()->with('error','El tiempo límite para usar el código enviado ha expirado. Por favor, solicita un nuevo código para continuar');
-        }
+    }
 
 
+    public function editPassword( Usuario $user )
+    {
+        return view('modulos.seguridad.auth.editPassword',compact('user'));
+    }
 
-
+    public function updatePassword(ResetPasswordRequest $request,  Usuario $user  )
+    {
+        $user->usuarioPassword = Hash::make( $request->usuarioPassword );
+        $user->save();
+        toastr()->success('Contraseña restablecida','Felicitaciones');
+        return redirect()->route('index');
     }
 
 

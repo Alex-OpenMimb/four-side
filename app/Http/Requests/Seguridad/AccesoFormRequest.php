@@ -22,7 +22,7 @@ class AccesoFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'usuarioAlias' => 'required|exists:seg_usuario,usuarioAlias',
+            'usuarioEmail' => 'required|email|exists:seg_usuario,usuarioEmail',
             'usuarioPassword' => 'required'
         ];
     }
@@ -30,8 +30,9 @@ class AccesoFormRequest extends FormRequest
     public function messages()
     {
         return [
-            'usuarioAlias.required' => 'El campo usuario es requerido.',
-            'usuarioAlias.exists' => 'El usuario ingresado no está registrado en la base de datos.',
+            'usuarioEmail.required' => 'El campo usuario es requerido.',
+            'usuarioEmail.exists' => 'El usuario ingresado no está registrado en la base de datos.',
+            'usuarioEmail.email' => 'No es un email válido.',
             'usuarioPassword.required' => 'El campo contraseña es requerido.'
         ];
     }

@@ -26,6 +26,10 @@ class ResetPasswordRequest extends FormRequest
                  return [
                      'usuarioEmail' => 'required|exists:seg_usuario,usuarioEmail',
                  ];
+             case 'PUT':
+                 return [
+                     'usuarioPassword' => 'required|min:8',
+                 ];
 
          }
     }
@@ -36,6 +40,7 @@ class ResetPasswordRequest extends FormRequest
         return [
             'usuarioEmail.required' => 'El campo usuario es requerido.',
             'usuarioEmail.exists' => 'El correo ingresado no se encuentra en la base de datos.',
+            'usuarioPassword.min' => 'La contraseña debe contener al menos 8 caracteres.',
         ];
     }
 }

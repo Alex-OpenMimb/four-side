@@ -10,5 +10,6 @@
 <body>
 <h1>Código de recuperación de contraseña</h1>
 <p>Tu código para recuperar la contraseña es: <strong>{{ $code }}</strong></p>
+<p> Este código expira en 15 minutos </p>
 </body>
 </html>

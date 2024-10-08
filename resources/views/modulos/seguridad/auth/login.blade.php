@@ -14,9 +14,9 @@
     <form id="formLogin" method="POST" action="{{ route('login') }}" class="my-5">
         @csrf
         <label class="input-group mb-3">
-            <input id="usuarioAlias" type="text" class="form-control" name="usuarioAlias" required
-                autocomplete="off" autofocus placeholder="Usuario" aria-label="usuario" value="{{old('usuarioAlias')}}" aria-describedby="usuario">
-            @error('usuarioAlias') <span class="text-danger ">{{ $message }}</span> @enderror
+            <input id="usuarioEmail" type="text" class="form-control" name="usuarioEmail" required
+                autocomplete="off" autofocus placeholder="Email" aria-label="Email" value="{{old('usuarioEmail')}}" aria-describedby="Email">
+            @error('usuarioEmail') <span class="text-danger ">{{ $message }}</span> @enderror
         </label>
         <label class="input-group mb-3">
             <input   placeholder="Contraseña" autocomplete="off"  aria-label="contraseña" aria-describedby="Contraseña" id="password"

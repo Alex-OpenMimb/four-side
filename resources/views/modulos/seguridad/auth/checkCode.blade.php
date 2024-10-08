@@ -19,6 +19,7 @@
             @error('token') <span class="text-danger ">{{ $message }}</span> @enderror
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary">Continuar</button>
+                <a href="{{route('restart')}}" class="btn btn-danger">Atras</a>
             </div>
         </form>
     </div>
