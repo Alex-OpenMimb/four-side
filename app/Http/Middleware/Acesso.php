@@ -16,7 +16,7 @@ class Acesso
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = session()->get('user');
+        $user = auth()->user();
         if (!$user ) {
             return redirect()->route('index')->with('error', 'Debe iniciar sesión para acceder a esta página.');
         }

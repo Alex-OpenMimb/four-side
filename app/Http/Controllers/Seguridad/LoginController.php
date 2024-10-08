@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\Seguridad;
 
 use App\Http\Requests\Seguridad\AccesoFormRequest;
-use DateTime;
-use DateInterval;
-use Illuminate\Http\Request;
 use App\Models\Seguridad\Usuario;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 
 class LoginController extends Controller
@@ -44,9 +41,7 @@ class LoginController extends Controller
 
            if( Hash::check($usuariosPassword, $user->usuarioPassword ) ){
                $user->guardarSesion( $user );
-
                return redirect()->route('usuarios.catalogo');
-
            }else{
                return redirect()->back()->with('error','Contraseña incorrecta, favor verificar');
            }
@@ -56,9 +51,9 @@ class LoginController extends Controller
 
     public function logout()
     {
-        $user = session()->get('user');
+        $user = auth()->user();
         if( $user->desconectar( $user ) ){
-            session()->flush();
+            Auth::logout();
             return redirect('/');
         }else{
             return redirect()->back()->with('error','Ha ocurrido un error al intentar esta acción, intente nuevamente, si el error perciste contacte al área de soporte');

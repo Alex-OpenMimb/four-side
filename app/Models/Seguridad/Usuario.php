@@ -5,9 +5,11 @@ namespace App\Models\Seguridad;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 
-class Usuario extends Model
+class Usuario extends Authenticatable
 {
 
     protected $table = 'seg_usuario';
@@ -49,6 +51,11 @@ class Usuario extends Model
     protected $primaryKey = "idUsuario";
     public $timestamps = true;
 
+    public function getAuthPassword()
+    {
+        return $this->usuarioPassword;
+    }
+
 
     public function conectar($id, $token)
     {
@@ -87,7 +94,7 @@ class Usuario extends Model
         $usuario->usuarioUltimaConexion = date('Y-m-d H:i:s');
         $usuario->usuarioConectado = 1;
         $usuario->save();
-        session()->put('user', $usuario);
+        Auth::login($usuario);
         return true;
     }
 }
