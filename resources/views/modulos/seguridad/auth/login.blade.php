@@ -24,16 +24,10 @@
             @error('usuarioPassword') <span class="text-danger ">{{ $message }}</span> @enderror
         </label>
 
-        <button type="submit" class="btn btn-dark w-100 mt-3">Iniciar</button>
+        <button type="submit" class="btn btn-dark w-100 my-3">Iniciar</button>
+        <a href="{{route('restart')}}">Olvidé mi contraseña</a>
     </form>
 
-    @if(session('error'))
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>  {{ session('error') }} </strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-    @endif
 
 @endsection
